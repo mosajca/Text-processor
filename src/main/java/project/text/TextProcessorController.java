@@ -29,6 +29,9 @@ public class TextProcessorController {
 
     @PostMapping
     public ResponseEntity<Map<String, UUID>> process(@RequestBody TextProcessingRequest request) {
+        if (request.getText() == null || request.getOptions() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         UUID id = UUID.randomUUID();
         textProcessorService.process(id, request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(Collections.singletonMap("id", id));
